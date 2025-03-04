@@ -30,6 +30,30 @@ void loginWithPhone(String phone) {
   }
 }
 void verifyOtp(String otp) {
+  //Using Firebase
+  // final authCredential =
+  //     await _auth.signInWithCredential(phoneAuthCredential);
+//   await _auth.verifyPhoneNumber(
+//       phoneNumber: phoneNo.toString(),
+//       verificationCompleted:
+//           (phoneAuthCredential) async {
+//       },
+//       verificationFailed:
+//           (verificationFailed) async {
+//         showBar(verificationFailed.message);
+//       },
+//       codeSent: (verificationId,
+//           resendToken) async {
+//           currentState =
+//               MobileVerificationState
+//                   .showOtpFormState;
+//           this.verificationId =
+//               verificationId;
+//       },
+//       codeAutoRetrievalTimeout:
+//           (verificationId) async {});
+// }
+
   if (otp == "123456") {
     showSpinner.value = true;
     Future.delayed(Duration(seconds: 2), () {

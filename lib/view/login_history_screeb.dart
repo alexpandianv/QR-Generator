@@ -236,27 +236,41 @@ bool showSpinner=false;
       itemCount: logins.length,
       itemBuilder: (context, index) {
         final data = logins[index];
-        return Card(
+        return Card(color:Colors.grey.shade900,elevation:5,
           margin: const EdgeInsets.all(8.0),
           child: ListTile(
             title: Text(
-              "Time: ${data['timestamp'] != null ? DateFormat('hh:mm a').format(DateTime.parse(data['timestamp']!).toLocal()) : 'N/A'}",
+              "${data['timestamp'] != null ? DateFormat('hh:mm a').format(DateTime.parse(data['timestamp']!).toLocal()) : 'N/A'}",
+              style: TextStyle(color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min, // Prevent unnecessary space
               children: [
-                Text("IP: ${data['ip'] ?? 'N/A'}"),
-                Text("Location: ${data['location'] ?? 'N/A'}"),
-                Text("QR Data: ${data['qrData'] ?? 'No Data'}"),
+                Text("IP: ${data['ip'] ?? 'N/A'}",
+                  style: TextStyle(color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),),
+                Text("${data['location'] ?? 'N/A'}" ,style: TextStyle(color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),),
               ],
             ),
-            trailing: QrImageView(
+            trailing:
+        ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child:
+        QrImageView(
               data: data['qrData'] ?? "No Data",
               size: 50,
               backgroundColor: Colors.white,
             ),
-          ),
+        )),
         );
       },
     );
