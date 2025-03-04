@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "74924992974",
+    "project_id": "qrapp-23728",
+    "storage_bucket": "qrapp-23728.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74924992974:android:acb73e2826b15e08a2a39f",
+        "android_client_info": {
+          "package_name": "com.ecbee.qr.qr_generator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKtXTVI1f482WuV3YpULUgUnzucuWpoco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
