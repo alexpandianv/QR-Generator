@@ -7,7 +7,7 @@ import 'package:qr_generator/utilitz/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qr_generator/controller/auth_controller.dart';
 
-import 'login_history_screeb.dart' show LoginHistoryScreen;
+import 'login_history_screen.dart' show LoginHistoryScreen;
 
 class QRShowScreen extends StatefulWidget {
   @override
@@ -25,18 +25,10 @@ class _QRShowScreenState extends State<QRShowScreen> {
   @override
   void initState() {
     super.initState();
-    _loadSavedLoginDetails();
+   ;
     _loadLastLoginTime();
   }
 
-  void _loadSavedLoginDetails() async {
-    var savedData = await authController.getSavedLoginDetails();
-    setState(() {
-      savedIp = savedData['ip']!;
-      savedLocation = savedData['location']!;
-      savedQrData = savedData['qrData']!;
-    });
-  }
 
   void _loadLastLoginTime() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -52,20 +44,9 @@ class _QRShowScreenState extends State<QRShowScreen> {
     }
   }
 
-  void _saveLoginData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+ Future< void> _saveLoginData(qrData) async {
+    await authController.saveLoginDetails("userId", qrData);
     String timestamp = DateTime.now().toIso8601String();
-
-    Map<String, String> newEntry = {
-      'ip': savedIp,
-      'location': savedLocation,
-      'qrData': randomNumber.toString(),
-      'timestamp': timestamp,
-    };
-
-    List<String> loginHistory = prefs.getStringList('login_history') ?? [];
-    loginHistory.insert(0, jsonEncode(newEntry));
-    await prefs.setStringList('login_history', loginHistory);
 
     setState(() {
       lastLoginTime = _formatTime(timestamp);
@@ -296,7 +277,7 @@ class _QRShowScreenState extends State<QRShowScreen> {
       ),
 
       // Bottom Save Button
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: Obx(()=>BottomAppBar(
         height: MediaQuery
             .sizeOf(context)
             .height * 0.14,
@@ -304,7 +285,9 @@ class _QRShowScreenState extends State<QRShowScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-            onPressed: _saveLoginData,
+            onPressed: () async {
+await _saveLoginData(qrData.toString())  ;
+            },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.symmetric(vertical: 15),
               backgroundColor: backGroundColorButton,
@@ -312,14 +295,14 @@ class _QRShowScreenState extends State<QRShowScreen> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: Text(
+            child:authController.showSpinner.value==true?CircularProgressIndicator(color: Colors.white,): Text(
               'Save',
               style: TextStyle(fontSize: 22, color: Colors.white),
             ),
           ),
         ),
       ),
-    );
+    ));
   }
 
 

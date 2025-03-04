@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_generator/utilitz/color.dart';
+import 'package:qr_generator/view/qr_show_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:intl/intl.dart';
@@ -186,7 +187,7 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen>
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () async {
-              Get.to(() => LoginHistoryScreen());
+              Get.off(() => QRShowScreen());
 
             },
             style: ElevatedButton.styleFrom(
@@ -235,8 +236,8 @@ Widget _buildHistoryList(List<Map<String, String>> logins,
         margin: const EdgeInsets.all(8.0),
         child: ListTile(
             title: Text(
-              "${data['timestamp'] != null ? DateFormat('hh:mm a').format(
-                  DateTime.parse(data['timestamp']!).toLocal()) : 'N/A'}",
+              data['timestamp'] != null ? DateFormat('hh:mm a').format(
+                  DateTime.parse(data['timestamp']!).toLocal()) : 'N/A',
               style: TextStyle(color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -251,7 +252,7 @@ Widget _buildHistoryList(List<Map<String, String>> logins,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),),
-                Text("${data['location'] ?? 'N/A'}",
+                Text(data['location'] ?? 'N/A',
                   style: TextStyle(color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
