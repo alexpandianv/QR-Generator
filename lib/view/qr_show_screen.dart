@@ -145,6 +145,8 @@ class _QRShowScreenState extends State<QRShowScreen> {
                                   left: -20,
                                   child: ClipPath(
                                     clipper: TriangleClipper(position: TrianglePosition.bottomLeft),
+                                    Positioned(
+                                      top: 88,
                                     child: Container(
                                       width: 250,
                                       height: 155,
@@ -152,8 +154,6 @@ class _QRShowScreenState extends State<QRShowScreen> {
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                    top: 88,
                                     left: -20,
                                   child: ClipPath(
                                     clipper: TriangleClipper(position: TrianglePosition.topRight),

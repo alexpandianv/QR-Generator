@@ -12,7 +12,8 @@ class LoginHistoryScreen extends StatefulWidget {
   _LoginHistoryScreenState createState() => _LoginHistoryScreenState();
 }
 
-class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTickerProviderStateMixin {
+class _LoginHistoryScreenState extends State<LoginHistoryScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<Map<String, String>> todayLogins = [];
   List<Map<String, String>> yesterdayLogins = [];
@@ -44,7 +45,8 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTick
       DateTime? entryDate = DateTime.tryParse(data['timestamp'] ?? '');
       if (entryDate == null) continue;
 
-      DateTime entryDay = DateTime(entryDate.year, entryDate.month, entryDate.day);
+      DateTime entryDay = DateTime(
+          entryDate.year, entryDate.month, entryDate.day);
 
       if (entryDay == today) {
         todayLogins.add(data);
@@ -99,17 +101,19 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTick
                   ),
 
                   // TabBarView (must be inside Expanded to take full space)
-                  showSpinner==true?Row(
+                  showSpinner == true ? Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children:[CircularProgressIndicator(
-                    color: Colors.white,
-                  )]):   Expanded(
+                      children: [CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                      ]) : Expanded(
                     child: TabBarView(
                       controller: _tabController,
                       children: [
                         _buildHistoryList(todayLogins, "No logins today"),
-                        _buildHistoryList(yesterdayLogins, "No logins yesterday"),
+                        _buildHistoryList(
+                            yesterdayLogins, "No logins yesterday"),
                         _buildHistoryList(otherLogins, "No older logins found"),
                       ],
                     ),
@@ -173,13 +177,16 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTick
         ],
       ),
       bottomNavigationBar: BottomAppBar(
-        height: MediaQuery.of(context).size.height * 0.14,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.14,
         color: Colors.black87,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-            onPressed: () async{
-            await  _saveLoginData();
+            onPressed: () async {
+              Get.offAll(() => QRShowScreen());
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 15),
@@ -188,12 +195,13 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTick
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child:  showSpinner==true?Row(
+            child: showSpinner == true ? Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children:[CircularProgressIndicator(
+                children: [CircularProgressIndicator(
                   color: Colors.white,
-                )]):    Text(
+                )
+                ]) : Text(
               'Save',
               style: TextStyle(fontSize: 22, color: Colors.white),
             ),
@@ -202,45 +210,32 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen> with SingleTick
       ),
     );
   }
-bool showSpinner=false;
-   _saveLoginData()  {
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        showSpinner=true;
 
-      });;
-    });
+  bool showSpinner = false;
+}
 
-    _loadLoginHistory();
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        showSpinner=false;
-
-      });;
-    });
-
-
+Widget _buildHistoryList(List<Map<String, String>> logins,
+    String emptyMessage) {
+  if (logins.isEmpty) {
+    return Center(
+      child: Text(
+        emptyMessage,
+        style: const TextStyle(
+            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+      ),
+    );
   }
 
-  Widget _buildHistoryList(List<Map<String, String>> logins, String emptyMessage) {
-    if (logins.isEmpty) {
-      return Center(
-        child: Text(
-          emptyMessage,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color:Colors.white),
-        ),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: logins.length,
-      itemBuilder: (context, index) {
-        final data = logins[index];
-        return Card(color:Colors.grey.shade900,elevation:5,
-          margin: const EdgeInsets.all(8.0),
-          child: ListTile(
+  return ListView.builder(
+    itemCount: logins.length,
+    itemBuilder: (context, index) {
+      final data = logins[index];
+      return Card(color: Colors.grey.shade900, elevation: 5,
+        margin: const EdgeInsets.all(8.0),
+        child: ListTile(
             title: Text(
-              "${data['timestamp'] != null ? DateFormat('hh:mm a').format(DateTime.parse(data['timestamp']!).toLocal()) : 'N/A'}",
+              "${data['timestamp'] != null ? DateFormat('hh:mm a').format(
+                  DateTime.parse(data['timestamp']!).toLocal()) : 'N/A'}",
               style: TextStyle(color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -255,24 +250,24 @@ bool showSpinner=false;
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),),
-                Text("${data['location'] ?? 'N/A'}" ,style: TextStyle(color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),),
+                Text("${data['location'] ?? 'N/A'}",
+                  style: TextStyle(color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),),
               ],
             ),
             trailing:
-        ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child:
-        QrImageView(
-              data: data['qrData'] ?? "No Data",
-              size: 50,
-              backgroundColor: Colors.white,
-            ),
-        )),
-        );
-      },
-    );
-  }
-}
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child:
+              QrImageView(
+                data: data['qrData'] ?? "No Data",
+                size: 50,
+                backgroundColor: Colors.white,
+              ),
+            )),
+      );
+    },
+  );
+}}
