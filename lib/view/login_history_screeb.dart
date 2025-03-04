@@ -186,7 +186,8 @@ class _LoginHistoryScreenState extends State<LoginHistoryScreen>
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () async {
-              Get.offAll(() => QRShowScreen());
+              Get.to(() => LoginHistoryScreen());
+
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 15),
@@ -270,4 +271,4 @@ Widget _buildHistoryList(List<Map<String, String>> logins,
       );
     },
   );
-}}
+}
